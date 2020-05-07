@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mailer = require('../modules/mailer');
 
 const Downloader = require('../models/Downloader');
 
@@ -11,8 +11,23 @@ module.exports = {
 
     async store(req, res) {
         const downloader = await Downloader.create(req.body);
+        const { name, email } =  req.body;
 
-        return res.json(downloader);
+        mailer.sendMail({
+            from: 'brainiac@gmail.com',
+            to: 'alexandre.sou@tap4mobile.com.br',
+            subject: 'Quem baixou meus arquivos!!!',
+            template: 'downloader_receive_files',
+            context:{ name, email }
+        }, (err) => {
+            if (err)
+                return res.status(400).send({ error: 'Cannot send email' });
+
+            // return res.send();
+            return res.json(downloader);
+        });
+
+       
     },
 
     async destroy(req, res) {
