@@ -15,7 +15,7 @@ module.exports = {
 
         mailer.sendMail({
             from: 'brainiac@gmail.com',
-            to: 'alexandre.sou@tap4mobile.com.br',
+            to: process.env.RECIPIENT,
             subject: 'Quem baixou meus arquivos!!!',
             template: 'downloader_receive_files',
             context:{ name, email }
